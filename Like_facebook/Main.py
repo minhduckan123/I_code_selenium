@@ -6,7 +6,7 @@ from time import sleep
 
 
 count_likes = 0
-f = open("hello_text_01.txt", "r")
+f = open("./account.txt", "r")
 username, password = f.read().split()
 
 # options = ChromiumOptions()
