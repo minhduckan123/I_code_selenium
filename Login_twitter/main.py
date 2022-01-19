@@ -44,8 +44,7 @@ driver.find_element(By.XPATH, "//*[@id=\"layers\"]/div/div/div/div/div/div/div[2
 wait(3,5)
 driver.find_element(By.XPATH, "//*[@id=\"layers\"]/div/div/div/div/div/div/div[2]/div[2]/div/div/div[2]/div[2]/div[2]/div/div/div").click()
 
-# Thoi gian su dung
-wait(1800, 1801)
-
 print("Đăng nhập thành công!")
 
+# Thoi gian su dung
+wait(1800, 1801)
