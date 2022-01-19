@@ -10,7 +10,7 @@ seed(randint(1,100))
 def wait(a,b):
     sleep(randint(a,b))
 
-f = open("hello_text_01.txt", "r")
+f = open("account.txt", "r")
 username, password = f.readline().strip().split()
 
 driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
