@@ -1,1 +1,3 @@
-gabcxyz123 123cba
+username password email
+Ex:
+abcxyz123 123456 xyz@gmail.com
