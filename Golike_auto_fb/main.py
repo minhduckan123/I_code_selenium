@@ -1,12 +1,16 @@
-from selenium import webdriver
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 import time
+import ssl
 
 
-driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
+# remove verify SSL
+ssl._create_default_https_context = ssl._create_unverified_context
+
+driver = uc.Chrome("/usr/lib/chromium-browser/chromedriver")
 driver.maximize_window()
 
 i_do = int(input())
