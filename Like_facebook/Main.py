@@ -1,17 +1,20 @@
-from selenium import webdriver
+import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chromium.options import ChromiumOptions
 from time import sleep
+import ssl
 
 
-count_likes = 0
+
+# remove verify SSL
+ssl._create_default_https_context = ssl._create_unverified_context
+
+count_likes = input("Nhap so like: ")
 f = open("./account.txt", "r")
 username, password = f.read().split()
 
-# options = ChromiumOptions()
-# options.headless = True
-driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
+driver = uc.Chrome()
 driver.maximize_window()
 
 driver.get("https://www.facebook.com/")
