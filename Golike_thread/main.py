@@ -10,35 +10,36 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 
 
-a = int(input("Nhập số lượng chạy: "))
+n = int(input("Nhập số lượng chạy: "))
        
 def runtest(t):
-       print(f"Đang chạy Profile{t+6}")
+       a = t+1
+       print(f"Đang chạy Profile{a}")
        sleep(t*5)
        chrome_options = webdriver.ChromeOptions()
-       chrome_options.add_argument(f"--user-data-dir=C:/Users/Lenovo T460/AppData/Local/Google/Chrome/User Data/Profile{t+6}")
-       chrome_options.add_argument("--disable-extensions")
+       chrome_options.add_argument(f"--user-data-dir=C:/Users/Lenovo T460/AppData/Local/Google/Chrome/User Data/Profile{a}")
        driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
        action = webdriver.ActionChains(driver)
        
-       
-       driver.set_window_rect(t*700,0,700,900)
+       if t<2:
+              driver.set_window_rect(t*700,0,700,900)
+       elif t==2:
+              driver.set_window_rect(0,300,700,900)
+       elif t==3:
+              driver.set_window_rect(700,300,700,900)
+       sleep(60)
        driver.get("https://app.golike.net/jobs")
        sleep(3)
        kiem_tien_ngay = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/span/div[2]/div/div/div[1]/div[2]/div/div")))
        kiem_tien_ngay.click()
        print("\nkiem tien ngay\n")
-       sleep(3)
 
        def run():
               try:
+                     chon_job = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div/div[2]/div[2]/span/div[1]/div/div/div/div")))
                      chon_job.click()
-                     chon_job = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div/div[2]/div[2]/span/div[1]/div/div/div/div")))
               except:
-                     try:
-                            chon_job = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div/div[2]/div[2]/span/div/div/div/div/div/div[2]/div[1]/div[1]/span")))
-                            chon_job.click()
-                     except:driver.execute_script('document.querySelector("#app > div > div:nth-child(1) > div.page-container > div > div:nth-child(2) > div:nth-child(3) > span > div > div").click()')
+                     driver.execute_script('document.querySelector("#app > div > div:nth-child(1) > div.page-container > div > div:nth-child(2) > div:nth-child(3) > span > div:nth-child(1) > div > div > div > div").click()')
               print("\nchon job\n")
               sleep(3)
 
@@ -46,7 +47,7 @@ def runtest(t):
               check_text = text.text
               print("\nlay van ban\n")
 
-              sleep(5)
+              sleep(3)
               driver.execute_script('document.querySelector("#app > div > div:nth-child(1) > div.page-container > div:nth-child(2) > div:nth-child(2) > div > div > a:nth-child(3) > div.col.px-0 > h6.font-bold.font-18").click()')
               driver.switch_to.window(driver.window_handles[1])
               print("\nlam job\n")
@@ -58,10 +59,12 @@ def runtest(t):
                             follow.click()
                             
                      except:
-                            ba_cham = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@aria-expanded="false"]')))
-                            ba_cham.click()
-                            follow = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@role="menuitem"]')))
-                            follow.click()
+                            try:
+                                   ba_cham = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@aria-expanded="false"]')))
+                                   ba_cham.click()
+                                   follow = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@role="menuitem"]')))
+                                   follow.click()
+                            except:pass
                             
                      print("\nFollow\n")
               elif "LIKE" in check_text:
@@ -99,13 +102,19 @@ def runtest(t):
               sleep(3)
               driver.close()
               driver.switch_to.window(driver.window_handles[0])
-              sleep(5)
+              sleep(7)
               driver.execute_script('document.querySelector("#app > div > div:nth-child(1) > div.page-container > div:nth-child(2) > div.card.card-job-detail.hand > div > div").click()')
               print("\nhoan thanh\n")
               try:
+                     text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="swal2-content"]'))).text
+                     print(f"Luong {a} hoan thanh job {text[-2:]}")
                      sleep(3)
                      driver.execute_script('document.querySelector("body > div.swal2-container.swal2-center.swal2-fade.swal2-shown > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click()')
                      print("\nxac nhan hoan thanh\n")
+                     sleep(1)
+                     driver.execute_script('document.querySelector("body > div.swal2-container.swal2-center.swal2-fade.swal2-shown > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click()')
+                     print("\nxac nhan hoan thanh\n")
+                     
               except:
                      pass
 
@@ -141,6 +150,8 @@ def runtest(t):
                      verify.click()
                      driver.switch_to.default_content()
                      sleep(3)
+                     text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="swal2-content"]'))).text
+                     print(f"Luong {a} hoan thanh job {text[-2:]}")
                      
                      driver.execute_script('document.querySelector("body > div.swal2-container.swal2-center.swal2-fade.swal2-shown > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click()')
                      print("\nxac nhan hoan thanh\n")
@@ -149,27 +160,26 @@ def runtest(t):
               
 
               
-       for i in range(a):
+       for i in range(n):
               try:
                      run()
-                     print(f"Hoan thanh job {i+1}")
               except:
-                     print(f"Loi job {i+1}")
+                     print(f"Loi hoan thanh")
                      
                      try:
                             driver.switch_to.window(driver.window_handles[1])
                             driver.close()
+                            driver.switch_to.window(driver.window_handles[0])
                      except:
                             pass
-                     driver.switch_to.window(driver.window_handles[0])
-                     sleep(10)
                      driver.get("https://app.golike.net/jobs")
+                     sleep(3)
                      kiem_tien_ngay = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/span/div[2]/div/div/div[1]/div[2]/div/div")))
                      kiem_tien_ngay.click()
                      print("\nkiem tien ngay\n")
        
        
-so_luong = 2
+so_luong = 3
 thread = []
 for i in range(so_luong):
        thread += [threading.Thread(target=runtest,args={i},)]

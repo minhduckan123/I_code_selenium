@@ -1,7 +1,7 @@
 import random
-import datetime
 import string
 from time import sleep
+import pyautogui
 import threading
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
@@ -21,14 +21,7 @@ def runtest(t):
        email = generate_email(random.randint(10,12))+"@gmail.com"
        password = generate_password(random.randint(6,10))
 
-       # print(gmail, password)
-       start_date = datetime.date(1980, 1, 1)
-       end_date = datetime.date(1999, 1, 1)
-
-       time_between_dates = end_date - start_date
-       days_between_dates = time_between_dates.days
-       random_number_of_days = random.randrange(days_between_dates)
-       random_date = start_date + datetime.timedelta(days=random_number_of_days)
+       date_of_birth = f"0{random.randint(1,9)}{random.randint(10,26)}{random.randint(1980,2000)}"
 
        # print(random_date.year)
        print("Dang chay luong", t)
@@ -36,21 +29,30 @@ def runtest(t):
        driver.get("https://www.lacoste.com/us/")
        
        x = t*500
-       y = 10
-       driver.set_window_rect(x,y,500,600)
+       y = 0
+       if t<4:
+              driver.set_window_rect(x,y,500,600)
+       elif t<8:
+              x= (t-4)*500
+              driver.set_window_rect(x,600,500,600)
+              
+       # driver.maximize_window()
 
        driver.get("https://www.lacoste.com/us/")
 
 
        send_email = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "/html/body/footer/section[1]/section[1]/section[1]/form/input[1]")))
        send_email.send_keys(email)
+       print("\nsend email\n")
 
        sign_up = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "/html/body/footer/section[1]/section[1]/section[1]/form/input[2]")))
        sign_up.click()
+       print("\nsign up\n")
 
        choose_MR = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"newsletter-form\"]/div[1]/div/label[1]")))
        choose_MS = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"newsletter-form\"]/div[1]/div/label[2]")))
        choose_MRS = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"newsletter-form\"]/div[1]/div/label[3]")))
+       print("\nchoose\n")
 
        choose_ = random.randint(1,3)
        if choose_ == 1:
@@ -62,33 +64,57 @@ def runtest(t):
 
        first_name = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"newsletter-firstname\"]")))
        first_name.send_keys(email[:5])
+       print("\nfirst name\n")
 
        last_name = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"newsletter-lastname\"]")))
        last_name.send_keys(email[5:10])
+       print("\nlast name\n")
 
        confirm_email = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"newsletter-emailConfirmation\"]")))
        confirm_email.send_keys(email)
+       print("\nconfirm email\n")
 
        Privacy_policy = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"newsletter-form\"]/div[8]/div/label")))
        Privacy_policy.click()
+       print("\nprivacy policy\n")
 
        submit = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"newsletter-confirm\"]")))
        submit.click()
+       print("\nsubmit\n")
 
        sleep(15)
        menu = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"main-menu\"]/button")))
        menu.click()
+       print("\nmenu\n")
 
        sleep(5)
        driver.execute_script('document.querySelector("#main-menu > div > div.nav-wrapper.js-nav-wrapper.nav-lvl0-wrapper.is-active > ul > li.nav-lvl0-tab.cell-mt-25.nav-footer-item.menu-separator > a > span").click()')
+       print("\nSome thing\n")
        sleep(3)
+       
+       email_create = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin_signup-email\"]")))
+       email_create.send_keys(email)
+       print("\nemail create\n")
+       
+       continue_ = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin_signup-continue\"]")))
+       continue_.click()
+       print("\ncontinue\n")
+       
+       create_my_acc = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin_signup-signup\"]")))
+       create_my_acc.click()
+       print("\ncreate my acc\n")
+       
+       create_password = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin_signup-password\"]")))
+       create_password.send_keys(password)
+       print("\ncreate password\n")
+       password_confirm = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin_signup-passwordConfirmation\"]")))
+       password_confirm.send_keys(password)
+       print("\nconfirm password\n")
 
-       create_acc = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"login-formpage\"]/section/div/div[2]/section/div/div[2]/a")))
-       create_acc.click()
-
-       choose_MRs = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-form\"]/div[1]/div/label[1]/input")))
-       choose_MSs = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-form\"]/div[1]/div/label[2]/input")))
-       choose_MRSs = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-form\"]/div[1]/div/label[3]/input")))
+       choose_MRs = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin-signup-form\"]/div/div[4]/div/label[1]")))
+       choose_MSs = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin-signup-form\"]/div/div[4]/div/label[2]")))
+       choose_MRSs = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin-signup-form\"]/div/div[4]/div/label[3]")))
+       print("\nchoose\n")
 
        if choose_ == 1:
               choose_MRs.click()
@@ -96,49 +122,29 @@ def runtest(t):
               choose_MSs.click()
        else:
               choose_MRSs.click()
-
-       first_names = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-form\"]/div[3]/div[1]/input")))
+       
+       first_names = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin_signup-firstName\"]")))
        first_names.send_keys(email[:5])
+       print("\nfirst name\n")
 
-       last_names = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-form\"]/div[3]/div[2]/input")))
+       last_names = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin_signup-lastName\"]")))
        last_names.send_keys(email[5:10])
-
-       emails = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-email1\"]")))
-       emails.send_keys(email)
-
-       confirm_emails = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-form\"]/div[5]/input")))
-       confirm_emails.send_keys(email)
-
-       passwords = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-password1\"]")))
-       passwords.send_keys(password)
-
-       confirm_passwords = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"register-form\"]/div[7]/input")))
-       confirm_passwords.send_keys(password)
-
-       submits = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "/html/body/main/section/div/div[2]/button")))
-       submits.click()
-
-       driver.get("https://www.lacoste.com/us/account/orders")
-       sleep(5)
-
-       driver.get("https://www.lacoste.com/us/account/profile")
-       sleep(5)
-
-       edit_profile = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "/html/body/main/section/div/article/div/div[1]/div[2]/div[1]/div[1]/div[1]/div/div/span")))
-       edit_profile.click()
-
-       date_time = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"edit-form-popin\"]/div[1]/div[3]/div/label")))
-       date_time.send_keys(random_date.day, random_date.month, random_date.year)
-
-       submitss = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"edit-form-popin-confirm\"]")))
-       submitss.click()
-       sleep(13)
-
-       menu.click()
-
-       driver.execute_script('document.querySelector("#main-menu > div > div.nav-wrapper.js-nav-wrapper.nav-lvl0-wrapper.is-active > ul > li.nav-lvl0-tab.cell-mt-25.nav-footer-item.menu-separator > div.padding-mt-4.fs--small.no-desk > a").click()')
-
+       print("\nlast name\n")
+       
+       date_time = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin-signup-form\"]/div/div[8]/div/label")))
+       date_time.click()
+       pyautogui.write(date_of_birth)
+       print("\ndate time\n")
+       
+       check_box = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin-signup-form\"]/div/div[10]/div/label")))
+       check_box.click()
+       print("\ncheck box\n")
+       
+       validate = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"signin_signup-register\"]")))
+       validate.click()
+       print("validate")
        sleep(1800)
+       
 
 
 so_luong = 4

@@ -14,7 +14,7 @@ from selenium.webdriver.support import expected_conditions as EC
 a = int(input("Nhập số lượng chạy: "))
 
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument(f"--user-data-dir=C:/Users/Lenovo T460/AppData/Local/Google/Chrome/User Data/Profile7")
+chrome_options.add_argument(f"--user-data-dir=C:/Users/Lenovo T460/AppData/Local/Google/Chrome/User Data/Profile6")
 chrome_options.add_argument("--disable-extensions")
 # chrome_options.headless = True
 driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
