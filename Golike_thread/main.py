@@ -1,7 +1,9 @@
 import pydub
 import urllib
 import threading
+import pyautogui
 from time import sleep
+from random import randint
 from selenium import webdriver
 import speech_recognition as sr
 from selenium.webdriver.common.by import By
@@ -11,9 +13,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 n = int(input("Nhập số lượng chạy: "))
+so_luong = 3
+thread = []
        
 def runtest(t):
-       a = t+1
+       a = t+8
        print(f"Đang chạy Profile{a}")
        sleep(t*5)
        chrome_options = webdriver.ChromeOptions()
@@ -47,7 +51,7 @@ def runtest(t):
               check_text = text.text
               print("\nlay van ban\n")
 
-              sleep(3)
+              sleep(4)
               driver.execute_script('document.querySelector("#app > div > div:nth-child(1) > div.page-container > div:nth-child(2) > div:nth-child(2) > div > div > a:nth-child(3) > div.col.px-0 > h6.font-bold.font-18").click()')
               driver.switch_to.window(driver.window_handles[1])
               print("\nlam job\n")
@@ -162,9 +166,10 @@ def runtest(t):
               
        for i in range(n):
               try:
+                     pyautogui.moveTo(randint(0,1900),randint(0,900),0.4)
                      run()
               except:
-                     print(f"Loi hoan thanh")
+                     print(f"Thu lai")
                      
                      try:
                             driver.switch_to.window(driver.window_handles[1])
@@ -179,8 +184,7 @@ def runtest(t):
                      print("\nkiem tien ngay\n")
        
        
-so_luong = 3
-thread = []
+
 for i in range(so_luong):
        thread += [threading.Thread(target=runtest,args={i},)]
 for i in thread:

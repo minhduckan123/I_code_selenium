@@ -10,12 +10,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument(f"--user-data-dir=C:/Users/Lenovo T460/AppData/Local/Google/Chrome/User Data/Profile2")
-# chrome_options.add_argument("--disable-extensions")
-# chrome_options.headless = True
-driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
-driver.maximize_window()
-driver.get("https://app.golike.net/jobs/facebook?load_job=true")
+if __name__ == "__main__":
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument(f"--user-data-dir=C:/Users/Lenovo T460/AppData/Local/Google/Chrome/User Data/Profile6")
+    # chrome_options.add_argument("--disable-extensions")
+    # chrome_options.headless = True
+    driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+    driver.maximize_window()
+    driver.get("https://app.golike.net/jobs/facebook?load_job=true")
 
-sleep(1800)
+    sleep(1800)
