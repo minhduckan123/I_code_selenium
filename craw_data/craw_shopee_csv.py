@@ -7,15 +7,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 
 
-f = open("./craw_shopee.csv", "w", encoding="utf-8")
+f = open("./craw_shopee.csv", "w", encoding="utf-8-sig")
 writer = csv.writer(f)
 writer.writerow(["name", "price 1","price 2", "address", "vote", "sold"])
 
 
-chrome_options = webdriver.ChromeOptions()
 # chrome_options.headless = True
-chrome_options.add_argument(f"--user-data-dir=C:/Users/Lenovo T460/AppData/Local/Google/Chrome/User Data/Profile6")
-driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
+driver = webdriver.Chrome(ChromeDriverManager().install())
 driver.maximize_window()
 driver.get("https://shopee.vn/")
 sleep(5)
@@ -32,18 +30,15 @@ def craw(n):
         print()
         sleep(3)
         if i < 16:
-            driver.execute_script("scrollTo(0,2000)")
+            driver.execute_script("scrollTo(0,1700)")
         elif i < 31:
-            driver.execute_script("scrollTo(0,3000)")
+            driver.execute_script("scrollTo(0,2700)")
         elif i < 46:
-            driver.execute_script("scrollTo(0,4000)")
+            driver.execute_script("scrollTo(0,3700)")
         elif i < 61:
-            driver.execute_script("scrollTo(0,5000)")
-        try:
-            name = WebDriverWait(driver, 30).until(EC.presence_of_element_located((By.XPATH, f'//*[@id="main"]/div/div[3]/div/div[4]/div[2]/div/div[2]/div[{i}]/a/div/div/div[2]/div[1]/div[1]/div')))
-            print(name.text)
-        except:
-            continue
+            driver.execute_script("scrollTo(0,4700)")
+        name = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, f'//*[@id="main"]/div/div[3]/div/div[4]/div[2]/div/div[2]/div[{i}]/a/div/div/div[2]/div[1]/div[1]/div')))
+        print(name.text)
         name_obiject = name.text
         price1 = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, f'//*[@id="main"]/div/div[3]/div/div[4]/div[2]/div/div[2]/div[{i}]/a/div/div/div[2]/div[2]/div[1]')))
         print(price1.text)
@@ -72,8 +67,25 @@ def craw(n):
         writer.writerow([name_obiject,price_1,price_2,address_object,vote_object,sold_object])
 
 craw(60)
+driver.execute_script("scrollTo(0,4000)")
+sleep(2)
+driver.execute_script("scrollTo(0,5000)")
 page2 = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, '//*[@id="main"]/div/div[3]/div/div[4]/div[2]/div/div[3]/div/button[3]')))
 page2.click()
 sleep(5)
-craw(40)
+craw(60)
+driver.execute_script("scrollTo(0,4000)")
+sleep(2)
+driver.execute_script("scrollTo(0,5000)")
+page2 = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, '//*[@id="main"]/div/div[3]/div/div[4]/div[2]/div/div[3]/div/button[4]')))
+page2.click()
+sleep(5)
+craw(60)
+driver.execute_script("scrollTo(0,4000)")
+sleep(2)
+driver.execute_script("scrollTo(0,5000)")
+page2 = WebDriverWait(driver, 120).until(EC.presence_of_element_located((By.XPATH, '//*[@id="main"]/div/div[3]/div/div[4]/div[2]/div/div[3]/div/button[5]')))
+page2.click()
+sleep(5)
+craw(20)
 print("\nHoan thanh\n")

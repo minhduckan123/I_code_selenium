@@ -17,7 +17,7 @@ so_luong = 3
 thread = []
        
 def runtest(t):
-       a = t+8
+       a = t+1
        print(f"Đang chạy Profile{a}")
        sleep(t*5)
        chrome_options = webdriver.ChromeOptions()
