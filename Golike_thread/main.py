@@ -1,7 +1,6 @@
 import pydub
 import urllib
 import threading
-import pyautogui
 from time import sleep
 from random import randint
 from selenium import webdriver
@@ -13,24 +12,26 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 n = int(input("Nhập số lượng chạy: "))
-so_luong = 3
+n = n*2
+so_luong = 4
 thread = []
        
 def runtest(t):
-       a = t+1
+       a = t+4
        print(f"Đang chạy Profile{a}")
        sleep(t*5)
        chrome_options = webdriver.ChromeOptions()
        chrome_options.add_argument(f"--user-data-dir=C:/Users/Lenovo T460/AppData/Local/Google/Chrome/User Data/Profile{a}")
+       chrome_options.add_argument("--mute-audio")
        driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chrome_options)
        action = webdriver.ActionChains(driver)
        
-       if t<2:
-              driver.set_window_rect(t*700,0,700,900)
-       elif t==2:
-              driver.set_window_rect(0,300,700,900)
+       if t<3:
+              driver.set_window_rect(t*700,0,700,800)
        elif t==3:
-              driver.set_window_rect(700,300,700,900)
+              driver.set_window_rect(0,500,700,800)
+       elif t==4:
+              driver.set_window_rect(700,500,700,800)
        sleep(60)
        driver.get("https://app.golike.net/jobs")
        sleep(3)
@@ -39,6 +40,10 @@ def runtest(t):
        print("\nkiem tien ngay\n")
 
        def run():
+              sleep(3)
+              theo_doi = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div/div[2]/div/div/span")))
+              theo_doi.click()
+              print("theo doi")
               try:
                      chon_job = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div/div[2]/div[2]/span/div[1]/div/div/div/div")))
                      chon_job.click()
@@ -166,7 +171,6 @@ def runtest(t):
               
        for i in range(n):
               try:
-                     pyautogui.moveTo(randint(0,1900),randint(0,900),0.4)
                      run()
               except:
                      print(f"Thu lai")
@@ -182,6 +186,8 @@ def runtest(t):
                      kiem_tien_ngay = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/span/div[2]/div/div/div[1]/div[2]/div/div")))
                      kiem_tien_ngay.click()
                      print("\nkiem tien ngay\n")
+                     sleep(2)
+                     
        
        
 

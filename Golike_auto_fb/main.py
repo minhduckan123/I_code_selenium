@@ -72,8 +72,6 @@ def runtest():
     elif "LIKE" in check_text:
             try:
                 likes = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//div[@aria-label='Like']")))
-                while likes is False:
-                    driver.execute_script('scrollTo(0,600)')
                 likes[0].click()
                 likes[1].click()
             except:
