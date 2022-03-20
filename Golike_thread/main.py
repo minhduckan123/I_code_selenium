@@ -2,7 +2,6 @@ import pydub
 import urllib
 import threading
 from time import sleep
-from random import randint
 from selenium import webdriver
 import speech_recognition as sr
 from selenium.webdriver.common.by import By
@@ -11,13 +10,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 
 
-n = int(input("Nhập số lượng chạy: "))
-n = n*2
-so_luong = 4
+n = input("Nhập số lượng chạy: ")
+text_ = "0"
+so_luong = 1
 thread = []
        
 def runtest(t):
-       a = t+4
+       a = t+10
        print(f"Đang chạy Profile{a}")
        sleep(t*5)
        chrome_options = webdriver.ChromeOptions()
@@ -27,11 +26,11 @@ def runtest(t):
        action = webdriver.ActionChains(driver)
        
        if t<3:
-              driver.set_window_rect(t*700,0,700,800)
+              driver.set_window_rect(t*600,0,600,700)
        elif t==3:
-              driver.set_window_rect(0,500,700,800)
+              driver.set_window_rect(0,700,600,700)
        elif t==4:
-              driver.set_window_rect(700,500,700,800)
+              driver.set_window_rect(600,700,600,700)
        sleep(60)
        driver.get("https://app.golike.net/jobs")
        sleep(3)
@@ -40,10 +39,8 @@ def runtest(t):
        print("\nkiem tien ngay\n")
 
        def run():
+              global text_
               sleep(3)
-              theo_doi = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div/div[2]/div[2]/div[2]/div/div[1]/div[1]/div/div[2]/div/div/span")))
-              theo_doi.click()
-              print("theo doi")
               try:
                      chon_job = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div/div[2]/div[2]/span/div[1]/div/div/div/div")))
                      chon_job.click()
@@ -52,8 +49,8 @@ def runtest(t):
               print("\nchon job\n")
               sleep(3)
 
-              text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div[1]/div/div/div/div/div[2]/div[1]/div/span")))
-              check_text = text.text
+              texts = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"app\"]/div/div[1]/div[2]/div[1]/div/div/div/div/div[2]/div[1]/div/span")))
+              check_text = texts.text
               print("\nlay van ban\n")
 
               sleep(4)
@@ -66,23 +63,29 @@ def runtest(t):
                      try:
                             follow = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[@aria-label='Follow']")))
                             follow.click()
-                            
+                            print("\nFollow1\n")
                      except:
                             try:
-                                   ba_cham = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@aria-expanded="false"]')))
-                                   ba_cham.click()
+                                   try:
+                                          ba_cham = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@aria-haspopup="menu"]')))
+                                          ba_cham.click()
+                                   except:
+                                          ba_cham = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@aria-label="More actions"]')))
+                                          ba_cham.click()
                                    follow = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@role="menuitem"]')))
                                    follow.click()
+                                   print("\nFollow2\n")
                             except:pass
                             
-                     print("\nFollow\n")
+                     print("\nFollow3\n")
               elif "LIKE" in check_text:
                      try:
                             likes = WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, "//div[@aria-label='Like']")))
-                            while likes is False:
-                                   driver.execute_script('scrollTo(0,700)')
-                            likes[0].click()
-                            likes[1].click()
+                            if "FANPAGE" in check_text:
+                                   likes[0].click()
+                            else:
+                                   likes[0].click()
+                                   likes[1].click()
                      except:
                             pass
                      print("\nLike\n")
@@ -116,14 +119,14 @@ def runtest(t):
               print("\nhoan thanh\n")
               try:
                      text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="swal2-content"]'))).text
-                     print(f"Luong {a} hoan thanh job {text[-2:]}")
+                     text_ = text[-2:]
+                     print(f"Luong {a} hoan thanh job {text_}/{n}")
                      sleep(3)
                      driver.execute_script('document.querySelector("body > div.swal2-container.swal2-center.swal2-fade.swal2-shown > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click()')
                      print("\nxac nhan hoan thanh\n")
                      sleep(1)
                      driver.execute_script('document.querySelector("body > div.swal2-container.swal2-center.swal2-fade.swal2-shown > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click()')
                      print("\nxac nhan hoan thanh\n")
-                     
               except:
                      pass
 
@@ -143,10 +146,10 @@ def runtest(t):
                      #get the mp3 audio file
                      src = driver.find_element(By.ID, "audio-source").get_attribute("src")
                      #download the mp3 audio file from the source
-                     urllib.request.urlretrieve(src, "sample.mp3")
-                     sound = pydub.AudioSegment.from_mp3("sample.mp3")
-                     sound.export("sample.wav", format="wav")
-                     file_audio = sr.AudioFile("sample.wav")
+                     urllib.request.urlretrieve(src, f"sample{a}.mp3")
+                     sound = pydub.AudioSegment.from_mp3(f"sample{a}.mp3")
+                     sound.export(f"sample{a}.wav", format="wav")
+                     file_audio = sr.AudioFile(f"sample{a}.wav")
                      rec = sr.Recognizer()
                      with file_audio as source:
                             audio_data = sr.Recognizer().record(source)
@@ -155,25 +158,24 @@ def runtest(t):
                      
                      text_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"audio-response\"]")))
                      text_input.send_keys(audio_text.lower())
+                     sleep(2)
                      verify = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//*[@id=\"recaptcha-verify-button\"]")))
                      verify.click()
                      driver.switch_to.default_content()
-                     sleep(3)
+                     sleep(2)
                      text = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="swal2-content"]'))).text
-                     print(f"Luong {a} hoan thanh job {text[-2:]}")
-                     
+                     text_ = text[-2:]
+                     print(f"Luong {a} hoan thanh job {text_}/{n}")
                      driver.execute_script('document.querySelector("body > div.swal2-container.swal2-center.swal2-fade.swal2-shown > div > div.swal2-actions > button.swal2-confirm.swal2-styled").click()')
                      print("\nxac nhan hoan thanh\n")
               except:
                      pass
               
-
-              
-       for i in range(n):
+       while text_ != n:
               try:
                      run()
               except:
-                     print(f"Thu lai")
+                     print(f"Thu lai luong {a}")
                      
                      try:
                             driver.switch_to.window(driver.window_handles[1])
