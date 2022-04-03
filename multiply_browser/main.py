@@ -17,7 +17,7 @@ so_luong = 4
 
 def runtest(t):
        sleep(t*10)
-       
+
 
        # print(random_date.year)
        print("Dang chay luong", t)
@@ -30,7 +30,7 @@ def runtest(t):
        elif t<8:
               x= (t-4)*500
               driver.set_window_rect(x,600,500,600)
-              
+
        # driver.maximize_window()
 
 
